@@ -16,7 +16,7 @@
                     Lista dni z zarezerwowaną salą:
                 <ul>
                     {% for reserv in reservations %}
-                        <li>{{ reserv.date|date:"d.m.Y" }}</li>
+                        <li>{{ reserv.date|date:"Y-m-d" }}</li>
                     {% endfor %}
                 </ul><br>
                 {% endif %}

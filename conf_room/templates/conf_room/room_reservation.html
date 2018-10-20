@@ -8,6 +8,14 @@
         <div class="media">
             <div class="media-body">
                 <h2 class="account-heading">Rezerwacja sali</h2>
+                {% if reservations %}
+                    Lista dni z zarezerwowaną salą:
+                <ul>
+                    {% for reserv in reservations %}
+                        <li>{{ reserv.date|date:"Y-m-d" }}</li>
+                    {% endfor %}
+                </ul><br>
+                {% endif %}
                 <form method="post">
                     {% csrf_token %}
                     <fieldset class="form-group">
