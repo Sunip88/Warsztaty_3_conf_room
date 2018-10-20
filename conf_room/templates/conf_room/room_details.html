@@ -12,6 +12,14 @@
                 <p class="text-secondary">Rzutnik: {{ room_det|change_bool }}<br>
                 Telewizor:{{ room_det.tv|change_bool }}<br>
                  Klimatyzacja:{{ room_det|change_bool }}<br></p>
+                {% if reservations %}
+                    Lista dni z zarezerwowaną salą:
+                <ul>
+                    {% for reserv in reservations %}
+                        <li>{{ reserv.date|date:"d.m.Y" }}</li>
+                    {% endfor %}
+                </ul><br>
+                {% endif %}
                 <a href="{% url 'room-reserv' room_det.id %}">Rezerwacja sali</a>
             </div>
         </div>

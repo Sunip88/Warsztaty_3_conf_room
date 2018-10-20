@@ -58,7 +58,9 @@ class RoomDetails(View):
     def get(self, request, id_room):
         room = get_object_or_404(Room, id=id_room)
         rooms = Room.objects.all()
-        return render(request, 'conf_room/room_details.html', {'room_det': room, 'rooms': rooms})
+        time_now = datetime.date(datetime.now())
+        reservations = Reservation.objects.filter(rooms_id=room, date__gt=time_now)
+        return render(request, 'conf_room/room_details.html', {'room_det': room, 'rooms': rooms, 'reservations': reservations})
 
 
 class RoomReserv(View):

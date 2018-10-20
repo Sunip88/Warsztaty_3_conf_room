@@ -11,4 +11,3 @@ def trueorfalse(var_bool):
     else:
         return 'Nie'
 
-
