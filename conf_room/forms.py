@@ -1,5 +1,6 @@
 from django import forms
 from .models import Room, Reservation
+from django.contrib.admin.widgets import AdminDateWidget
 
 
 class AddRoomForm(forms.ModelForm):
@@ -12,4 +13,6 @@ class AddReservForm(forms.ModelForm):
     class Meta:
         model = Reservation
         fields = ['date', 'comment']
+
+
 

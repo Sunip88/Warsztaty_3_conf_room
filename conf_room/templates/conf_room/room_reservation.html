@@ -1,0 +1,27 @@
+{% extends "conf_room/room_nav.html" %}
+{% load static %}
+{% load extras %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block content %}
+        <div class="content-section">
+        <div class="media">
+            <div class="media-body">
+                <h2 class="account-heading">Rezerwacja sali</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                        {{ form|crispy }}
+                    </fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-outline-info" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+
+

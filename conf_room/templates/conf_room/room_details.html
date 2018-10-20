@@ -12,15 +12,7 @@
                 <p class="text-secondary">Rzutnik: {{ room_det|change_bool }}<br>
                 Telewizor:{{ room_det.tv|change_bool }}<br>
                  Klimatyzacja:{{ room_det|change_bool }}<br></p>
-                <form method="post">
-                    {% csrf_token %}
-                    <fieldset class="form-group">
-                        {{ form|crispy }}
-                    </fieldset>
-                    <div class="form-group">
-                        <button class="btn btn-outline-info" type="submit">Submit</button>
-                    </div>
-                </form>
+                <a href="{% url 'room-reserv' room_det.id %}">Rezerwacja sali</a>
             </div>
         </div>
     </div>

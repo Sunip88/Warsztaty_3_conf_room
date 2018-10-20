@@ -54,11 +54,20 @@ class RoomShow(View):
 
 
 class RoomDetails(View):
-    form_class = AddReservForm
+
     def get(self, request, id_room):
         room = get_object_or_404(Room, id=id_room)
         rooms = Room.objects.all()
-        return render(request, 'conf_room/room_details.html', {'room_det': room, 'rooms': rooms, 'form': self.form_class})
+        return render(request, 'conf_room/room_details.html', {'room_det': room, 'rooms': rooms})
+
+
+class RoomReserv(View):
+    form_class = AddReservForm
+
+    def get(self, request, id_room):
+        room = get_object_or_404(Room, id=id_room)
+        rooms = Room.objects.all()
+        return render(request, 'conf_room/room_reservation.html', {'room_det': room, 'rooms': rooms, 'form': self.form_class})
 
     def post(self, request, id_room):
         form = self.form_class(request.POST)
@@ -75,6 +84,7 @@ class RoomDetails(View):
             messages.warning(request, 'Błędne dane')
             return redirect('room-details', id_room)
         return redirect('room-all')
+
 
 
 def delete_room(request, id_room):
