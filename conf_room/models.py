@@ -5,6 +5,8 @@ class Room(models.Model):
     name = models.CharField(max_length=64)
     capacity = models.IntegerField()
     projector = models.BooleanField(default=False)
+    tv = models.BooleanField(default=False)
+    air_conditioning = models.BooleanField(default=False)
 
 
 class Reservation(models.Model):

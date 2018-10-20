@@ -18,3 +18,4 @@ class AddRomm(View):
             return redirect('room-add')
         messages.error(request, 'Błędne dane')
         return HttpResponse('Nieprawidłowe dane')
+
