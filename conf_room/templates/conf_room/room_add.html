@@ -6,11 +6,11 @@
         <form method="post">
             {% csrf_token %}
             <fieldset class="form-group">
-                <label class="border-bottom mb-4">Dodaj salę</label>
+                <label class="border-bottom mb-4">{{ title }}</label>
                 {{ form|crispy }}
             </fieldset>
             <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Dodaj</button>
+                <button class="btn btn-outline-info" type="submit">Submit</button>
             </div>
         </form>
     </div>

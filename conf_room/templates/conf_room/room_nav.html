@@ -3,13 +3,13 @@
 <main role="main" class="container">
     <div class="row">
         <div class="col-md-4">
+        <h3>Sale</h3>
             <div class="content-section">
-            <h3>Osoby <a href="#" class="small text-secondary">dodaj</a></h3>
                 <p>
                     <ul class="list-group">
-
-                        <li class="list-group-item list-group-item-light"><a href="#"></a></li>
-
+                        {% for room in rooms %}
+                        <li class="list-group-item list-group-item-light"><a href="{% url 'room-details' room.id %}">{{ room.name }}</a></li>
+                        {% endfor %}
                     </ul>
                 </p>
             </div>

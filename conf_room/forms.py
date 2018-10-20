@@ -8,3 +8,8 @@ class AddRoomForm(forms.ModelForm):
         fields = ['name', 'capacity', 'projector']
 
 
+class AddReservForm(forms.ModelForm):
+    class Meta:
+        model = Reservation
+        fields = ['date', 'comment']
+

@@ -1,0 +1,28 @@
+{% extends "conf_room/room_nav.html" %}
+{% load static %}
+{% load extras %}
+{% load crispy_forms_tags %}
+{% block content %}
+        <div class="content-section">
+        <div class="media">
+            <div class="media-body">
+                <h2 class="account-heading">{{ room_det.name }}
+                    <a href="{% url 'room-modify' room_det.id %}" class="small">edytuj</a> </h2>
+                <p class="text-secondary">Pojemność sali: {{ room_det.capacity }}</p><br>
+                <p class="text-secondary">Rzutnik: {{ room_det|change_bool }}<br>
+                Telewizor:{{ room_det.tv|change_bool }}<br>
+                 Klimatyzacja:{{ room_det|change_bool }}<br></p>
+                <form method="post">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                        {{ form|crispy }}
+                    </fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-outline-info" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
