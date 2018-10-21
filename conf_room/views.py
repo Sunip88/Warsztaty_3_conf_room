@@ -8,6 +8,7 @@ from datetime import datetime
 
 class AddRoom(View):
     form_class = AddRoomForm
+
     def get(self, request):
         rooms = Room.objects.all()
         return render(request, 'conf_room/room_add.html',
@@ -48,9 +49,56 @@ class ModifyRoom(View):
 
 
 class RoomShow(View):
+    class_form = SearchForm
     def get(self, request):
         rooms = Room.objects.all()
-        return render(request, 'conf_room/home.html', {'rooms': rooms})
+        return render(request, 'conf_room/home.html', {'rooms': rooms, 'form': self.class_form})
+
+    def post(self, request):
+        form = self.class_form(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            capacity = form.cleaned_data['capacity']
+            projector = form.cleaned_data['projector']
+            tv = form.cleaned_data['tv']
+            air_cond = form.cleaned_data['air_conditioning']
+            date = form.cleaned_data['date']
+
+            if name:
+                room_name = Room.objects.filter(name__icontains=name)
+            else:
+                room_name = Room.objects.all()
+
+            if capacity:
+                room_capacity = Room.objects.filter(capacity__gte=capacity)
+            else:
+                room_capacity = Room.objects.all()
+
+            if projector:
+                room_projector = Room.objects.filter(projector=projector)
+            else:
+                room_projector = Room.objects.all()
+
+            if tv:
+                room_tv = Room.objects.filter(tv=tv)
+            else:
+                room_tv = Room.objects.all()
+
+            if air_cond:
+                room_air_cond = Room.objects.filter(air_conditioning=air_cond)
+            else:
+                room_air_cond = Room.objects.all()
+
+            rooms = room_name & room_capacity & room_projector & room_tv & room_air_cond
+            if date:
+                temp = []
+                for room in rooms:
+                    roomif = Reservation.objects.filter(date=date, rooms_id=room)
+                    if len(roomif) == 0:
+                        temp.append(room)
+            else:
+                temp = rooms
+            return render(request, 'conf_room/search_room.html', {'rooms': temp})
 
 
 class RoomDetails(View):
@@ -78,10 +126,11 @@ class RoomReserv(View):
         form = self.form_class(request.POST)
         room = get_object_or_404(Room, id=id_room)
         if form.is_valid():
-            reservation_db = list(Reservation.objects.filter(rooms_id=room, date=form.instance.date))
-            if not reservation_db and form.instance.date >= datetime.date(datetime.now()):
+            date_form = form.cleaned_data['date']
+            reservation_db = list(Reservation.objects.filter(rooms_id=room, date=date_form))
+            if not reservation_db and date_form >= datetime.date(datetime.now()):
                 messages.success(request, 'Rezerwacja dokonana')
-                Reservation.objects.create(date=form.instance.date, rooms=room, comment=form.instance.comment)
+                Reservation.objects.create(date=date_form, rooms=room, comment=form.cleaned_data['comment'])
             else:
                 messages.warning(request, 'Podano złą datę')
                 return redirect('room-details', id_room)

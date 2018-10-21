@@ -15,4 +15,11 @@ class AddReservForm(forms.ModelForm):
         fields = ['date', 'comment']
 
 
+class SearchForm(forms.Form):
+    name = forms.CharField(max_length=64, required=False)
+    capacity = forms.IntegerField(required=False, label='Ilość miejsc')
+    date = forms.DateField(required=False)
+    projector = forms.BooleanField(required=False)
+    tv = forms.BooleanField(required=False)
+    air_conditioning = forms.BooleanField(required=False)
 

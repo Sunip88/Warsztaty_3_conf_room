@@ -1,4 +1,5 @@
 {% extends "conf_room/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
     <main role="main" class="container">
     <div class="row">
@@ -9,6 +10,17 @@
                 {% endfor %}
             {% endif %}
             <div class="content-section">
+            <label>Wyszukiwanie</label>
+                <form method="post">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                        {{ form|crispy }}
+                    </fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-outline-info" type="submit">Submit</button>
+                    </div>
+                </form>
+            <label>Lista sal</label>
                 <table cellpadding="5" cellspacing="5" border="1">
                     <tr>
                         <th>Nazwa</th>

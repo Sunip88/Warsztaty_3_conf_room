@@ -1,0 +1,30 @@
+{% extends "conf_room/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <main role="main" class="container">
+    <div class="row">
+        <div class="col-md-8">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            <div class="content-section">
+            {% if rooms %}
+            <label>Wyniki wyszukiwania</label>
+                <ul>
+                    {% for room in rooms %}
+                        <li>
+                            <a href="{% url 'room-details' room.id %}">{{ room.name}}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+            Brak wyników wyszukiwania
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock content %}
