@@ -98,7 +98,21 @@ class RoomShow(View):
                         temp.append(room)
             else:
                 temp = rooms
+
+            url = '/?'
+            for t in temp:
+                a = f'{t.id}={t.name}'
+                url += a
+
+            # return redirect('search')
+            # return redirect(f'search{url}')
             return render(request, 'conf_room/search_room.html', {'rooms': temp})
+
+
+
+def search_show(request):
+
+    return render(request, 'conf_room/search_room.html')
 
 
 class RoomDetails(View):
