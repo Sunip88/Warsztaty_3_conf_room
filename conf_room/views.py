@@ -13,6 +13,7 @@ class AddRoom(View):
         rooms = Room.objects.all()
         return render(request, 'conf_room/room_add.html',
                       {'form': self.form_class, 'rooms': rooms, 'title': 'Dodaj sale'})
+
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -100,19 +101,21 @@ class RoomShow(View):
                 temp = rooms
 
             url = '/?'
+            a = []
             for t in temp:
-                a = f'{t.id}={t.name}'
-                url += a
-
-            # return redirect('search')
-            # return redirect(f'search{url}')
-            return render(request, 'conf_room/search_room.html', {'rooms': temp})
-
+                a.append(f'id={t.id}')
+            b = '&'.join(a)
+            url += b
+            return redirect(f'search{url}')
+            # return render(request, 'conf_room/search_room.html', {'rooms': temp})
 
 
 def search_show(request):
-
-    return render(request, 'conf_room/search_room.html')
+    id_list = request.GET.getlist('id')
+    room_list = []
+    for room_id in id_list:
+        room_list.append(get_object_or_404(Room, pk=room_id))
+    return render(request, 'conf_room/search_room.html', {'rooms':room_list})
 
 
 class RoomDetails(View):

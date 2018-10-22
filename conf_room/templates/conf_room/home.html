@@ -1,5 +1,6 @@
 {% extends "conf_room/base.html" %}
 {% load crispy_forms_tags %}
+{% load extras %}
 {% block content %}
     <main role="main" class="container">
     <div class="row">
@@ -19,8 +20,8 @@
                     <div class="form-group">
                         <button class="btn btn-outline-info" type="submit">Submit</button>
                     </div>
-                </form>
-            <label>Lista sal</label>
+                </form><br><br>
+                <label><h3>Lista sal</h3></label>
                 <table cellpadding="5" cellspacing="5" border="1">
                     <tr>
                         <th>Nazwa</th>
@@ -31,7 +32,7 @@
                     {% for room in rooms %}
                         <tr>
                             <td><a href="{% url 'room-details' room.id %}">{{ room.name}}</a></td>
-                            <td>bla</td>
+                            <td>{{ room.id|reserv_today }}</td>
                             <td><a href="{% url 'room-modify' room.id %}">edycja</a></td>
                             <td><a href="{% url 'room-delete' room.id %}">usuń</a></td>
                         </tr>
