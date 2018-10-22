@@ -51,6 +51,7 @@ class ModifyRoom(View):
 
 class RoomShow(View):
     class_form = SearchForm
+
     def get(self, request):
         rooms = Room.objects.all()
         return render(request, 'conf_room/home.html', {'rooms': rooms, 'form': self.class_form})
@@ -124,7 +125,7 @@ class RoomDetails(View):
         room = get_object_or_404(Room, id=id_room)
         rooms = Room.objects.all()
         time_now = datetime.date(datetime.now())
-        reservations = Reservation.objects.filter(rooms_id=room, date__gt=time_now)
+        reservations = Reservation.objects.filter(rooms_id=room, date__gte=time_now)
         return render(request, 'conf_room/room_details.html', {'room_det': room, 'rooms': rooms, 'reservations': reservations})
 
 
@@ -135,7 +136,7 @@ class RoomReserv(View):
         room = get_object_or_404(Room, id=id_room)
         rooms = Room.objects.all()
         time_now = datetime.date(datetime.now())
-        reservations = Reservation.objects.filter(rooms_id=room, date__gt=time_now)
+        reservations = Reservation.objects.filter(rooms_id=room, date__gte=time_now)
         return render(request, 'conf_room/room_reservation.html',
                       {'room_det': room, 'rooms': rooms, 'form': self.form_class, 'reservations': reservations})
 
