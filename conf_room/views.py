@@ -109,7 +109,9 @@ class RoomShow(View):
             url += b
             return redirect(f'search{url}')
             # return render(request, 'conf_room/search_room.html', {'rooms': temp})
-
+        else:
+            url = '/?'
+            return redirect(f'search{url}')
 
 def search_show(request):
     id_list = request.GET.getlist('id')
