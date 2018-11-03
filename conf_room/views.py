@@ -54,7 +54,10 @@ class RoomShow(View):
 
     def get(self, request):
         rooms = Room.objects.all()
-        return render(request, 'conf_room/home.html', {'rooms': rooms, 'form': self.class_form})
+        # initial = {'name': '2018-01-01'}
+        initial = {}
+        form = self.class_form(initial=initial)
+        return render(request, 'conf_room/home.html', {'rooms': rooms, 'form': form})
 
     def post(self, request):
         form = self.class_form(request.POST)
@@ -110,6 +113,7 @@ class RoomShow(View):
             return redirect(f'search{url}')
             # return render(request, 'conf_room/search_room.html', {'rooms': temp})
         else:
+            messages.error(request, 'Źle wypełniony formularz')
             url = '/?'
             return redirect(f'search{url}')
 
