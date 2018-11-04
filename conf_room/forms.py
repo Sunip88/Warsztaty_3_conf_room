@@ -13,6 +13,14 @@ class AddReservForm(forms.ModelForm):
     class Meta:
         model = Reservation
         fields = ['date', 'comment']
+        help_texts = {
+            'date': 'np:. 2018-01-01',
+            'comment': 'np:. Jakiś komentarz.'
+        }
+        labels = {
+            'date': 'Data',
+            'comment': 'Komentarz'
+        }
 
 
 class SearchForm(forms.Form):

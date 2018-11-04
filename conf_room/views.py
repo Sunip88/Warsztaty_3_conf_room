@@ -138,13 +138,16 @@ class RoomDetails(View):
 class RoomReserv(View):
     form_class = AddReservForm
 
-    def get(self, request, id_room):
+    def get(self, request, id_room, date='', comment=''):
         room = get_object_or_404(Room, id=id_room)
         rooms = Room.objects.all()
         time_now = datetime.date(datetime.now())
+        # initial = {'name': '2018-01-01'}
+        initial = {'date': date, 'comment': comment}
+        form = self.form_class(initial=initial)
         reservations = Reservation.objects.filter(rooms_id=room, date__gte=time_now)
         return render(request, 'conf_room/room_reservation.html',
-                      {'room_det': room, 'rooms': rooms, 'form': self.form_class, 'reservations': reservations})
+                      {'room_det': room, 'rooms': rooms, 'form': form, 'reservations': reservations})
 
     def post(self, request, id_room):
         form = self.form_class(request.POST)
@@ -160,7 +163,7 @@ class RoomReserv(View):
                 return redirect('room-details', id_room)
         else:
             messages.warning(request, 'Błędne dane')
-            return redirect('room-details', id_room)
+            return redirect('room-reserv', id_room)
         return redirect('room-all')
 
 
