@@ -1,6 +1,7 @@
 from django import forms
 from .models import Room, Reservation
-from django.contrib.admin.widgets import AdminDateWidget
+from django.forms.widgets import SelectDateWidget
+from datetime import datetime
 
 
 class AddRoomForm(forms.ModelForm):
@@ -10,24 +11,29 @@ class AddRoomForm(forms.ModelForm):
 
 
 class AddReservForm(forms.ModelForm):
+    year = datetime.today().year
+    year_range = tuple([i for i in range(year, year + 2)])
+    date = forms.DateField(label='Data', widget=SelectDateWidget(years=year_range))
+
     class Meta:
         model = Reservation
         fields = ['date', 'comment']
         help_texts = {
-            'date': 'np:. 2018-01-01',
             'comment': 'np:. Jakiś komentarz.'
         }
         labels = {
-            'date': 'Data',
             'comment': 'Komentarz'
         }
 
 
 class SearchForm(forms.Form):
-    name = forms.CharField(max_length=64, required=False)
-    capacity = forms.IntegerField(required=False, label='Ilość miejsc')
-    date = forms.DateField(required=False)
-    projector = forms.BooleanField(required=False)
-    tv = forms.BooleanField(required=False)
-    air_conditioning = forms.BooleanField(required=False)
+    year = datetime.today().year
+    year_range = tuple([i for i in range(year, year + 3)])
+
+    name = forms.CharField(max_length=64, required=False, label='Nazwa sali')
+    capacity = forms.IntegerField(required=False, label='Minimalna ilość miejsc')
+    date = forms.DateField(required=False, label='Data', widget=SelectDateWidget(years=year_range))
+    projector = forms.BooleanField(required=False, label='Projektor')
+    tv = forms.BooleanField(required=False, label='TV')
+    air_conditioning = forms.BooleanField(required=False, label='Klimatyzacja')
 

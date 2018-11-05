@@ -54,10 +54,7 @@ class RoomShow(View):
 
     def get(self, request):
         rooms = Room.objects.all()
-        # initial = {'name': '2018-01-01'}
-        initial = {}
-        form = self.class_form(initial=initial)
-        return render(request, 'conf_room/home.html', {'rooms': rooms, 'form': form})
+        return render(request, 'conf_room/home.html', {'rooms': rooms, 'form': self.class_form})
 
     def post(self, request):
         form = self.class_form(request.POST)
@@ -113,9 +110,9 @@ class RoomShow(View):
             return redirect(f'search{url}')
             # return render(request, 'conf_room/search_room.html', {'rooms': temp})
         else:
-            messages.error(request, 'Źle wypełniony formularz')
-            url = '/?'
-            return redirect(f'search{url}')
+            messages.warning(request, 'Źle wypełniony formularz')
+            rooms = Room.objects.all()
+            return render(request, 'conf_room/home.html', {'rooms': rooms, 'form': self.class_form})
 
 def search_show(request):
     id_list = request.GET.getlist('id')
@@ -138,16 +135,13 @@ class RoomDetails(View):
 class RoomReserv(View):
     form_class = AddReservForm
 
-    def get(self, request, id_room, date='', comment=''):
+    def get(self, request, id_room):
         room = get_object_or_404(Room, id=id_room)
         rooms = Room.objects.all()
         time_now = datetime.date(datetime.now())
-        # initial = {'name': '2018-01-01'}
-        initial = {'date': date, 'comment': comment}
-        form = self.form_class(initial=initial)
         reservations = Reservation.objects.filter(rooms_id=room, date__gte=time_now)
         return render(request, 'conf_room/room_reservation.html',
-                      {'room_det': room, 'rooms': rooms, 'form': form, 'reservations': reservations})
+                      {'room_det': room, 'rooms': rooms, 'form': self.form_class, 'reservations': reservations})
 
     def post(self, request, id_room):
         form = self.form_class(request.POST)
@@ -159,12 +153,19 @@ class RoomReserv(View):
                 messages.success(request, 'Rezerwacja dokonana')
                 Reservation.objects.create(date=date_form, rooms=room, comment=form.cleaned_data['comment'])
             else:
-                messages.warning(request, 'Podano złą datę')
-                return redirect('room-details', id_room)
+                messages.warning(request, 'Sala jest zarezerwowana w podanej dacie lub podano date z przeszlosci')
+                rooms = Room.objects.all()
+                time_now = datetime.date(datetime.now())
+                reservations = Reservation.objects.filter(rooms_id=room, date__gte=time_now)
+                return render(request, 'conf_room/room_reservation.html',
+                              {'room_det': room, 'rooms': rooms, 'form': form, 'reservations': reservations})
         else:
-            messages.warning(request, 'Błędne dane')
-            return redirect('room-reserv', id_room)
-        return redirect('room-all')
+            rooms = Room.objects.all()
+            time_now = datetime.date(datetime.now())
+            reservations = Reservation.objects.filter(rooms_id=room, date__gte=time_now)
+            return render(request, 'conf_room/room_reservation.html',
+                          {'room_det': room, 'rooms': rooms, 'form': form, 'reservations': reservations})
+        return redirect('room-details', id_room)
 
 
 def delete_room(request, id_room):
